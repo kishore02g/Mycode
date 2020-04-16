@@ -1,0 +1,84 @@
+Docker commands most useful: intelliq
+
+Docker --version
+
+Docker client:
+-> docker run
+-> docker build
+-> docker image
+
+gitbash is acting as docker client through docker deamon.
+
+Registry: public and private.
+
+public: hub.docker.com
+
+private: our server where our team only can access.
+
+image: combination of libararies and binaries.
+
+running instance of image is called container.
+
+
+Major Docker commands(important):
+
+====================================
+
+working on Docker images:
+==========================
+
+1) to pull an image:
+
+docker pull image_name
+
+2) to push an image into docker hub
+
+docker push image_name
+
+3) to search for an image
+
+docker search image_name
+
+4) to delete an image from the dockerhost
+
+docker rmi image_name/image_id
+
+5) to create an image using a container
+
+docker commit container_name/container_id new_image_name
+
+6) to create images from a docker file
+
+docker build -t new_image_name .     (. represent current working directory)
+
+
+7) To see the list of all the images present in the dockerhost
+
+docker images
+
+or
+
+docker images ls
+
+9) to delete all the unused images
+
+docker system prune -a
+
+10) To link an image with a localregistry(tag)
+
+docker tag image_name localregistry/image_name
+
+
+working on docker containers:
+=============================
+11) to see the list of all the running containers
+
+docker container ls
+
+12) to see the list of all container( running and stopped)
+
+docker ps -a
+
+13) to start a stopped container
+
+docker start container_name/container_id

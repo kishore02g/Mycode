@@ -1,0 +1,330 @@
+class 1: 
+========
+
+docker commands:
+
+docker ps : what all are the containers running will be shown.
+
+same details with below command:
+
+docker container ls
+==========================
+root@gkr:/home/gkr# docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+
+root@gkr:/home/gkr# docker container ls
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+=============================
+
+if you want to run a container u need an image .
+
+container is nothing but a running image.
+
+=========================
+root@gkr:/home/gkr# docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+hello-world         latest              fce289e99eb9        15 months ago       1.84kB
+=========================
+
+docker pull nginx
+
+=================
+
+root@gkr:/home/gkr# docker pull nginx
+Using default tag: latest
+latest: Pulling from library/nginx
+68ced04f60ab: Pull complete
+28252775b295: Pull complete
+a616aa3b0bf2: Pull complete
+Digest: sha256:2539d4344dd18e1df02be842ffc435f8e1f699cfc55516e2cf2cb16b7a9aea0b
+Status: Downloaded newer image for nginx:latest
+docker.io/library/nginx:latest
+======================
+
+docker images:
+
+show the images which got pulled.
+=======================
+root@gkr:/home/gkr# docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+nginx               latest              6678c7c2e56c        3 weeks ago         127MB
+hello-world         latest              fce289e99eb9        15 months ago       1.84kB
+===================
+
+Docker host:
+------------
+Docker host is nothing but where ever Docker is running at that system or server is called as Docker host.
+
+inside the docker host we run docker containers.
+
+===
+root@gkr:/home/gkr# ifconfig
+docker0: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
+        inet 172.17.0.1  netmask 255.255.0.0  broadcast 172.17.255.255
+        inet6 fe80::42:66ff:fe10:1862  prefixlen 64  scopeid 0x20<link>
+        ether 02:42:66:10:18:62  txqueuelen 0  (Ethernet)
+        RX packets 0  bytes 0 (0.0 B)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 5  bytes 426 (426.0 B)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+=====
+
+the container get the ipaddress from above docker0:
+
+inet 172.17.0.1
+
+the container can take the ip address from the docker ranges:
+let say 
+container 1: inet 172.17.0.10
+
+container 2: inet 172.17.0.11
+
+from out side we cannot able to connect these container as they fall into the private network.
+
+container will share the docker's host ip address.
+thats why it is called as Bridge network.
+
+lets start a container so that we can get an idea.
+
+to run containers:
+ docker run..
+
+docker run -i -t
+
+-i = interactive 
+
+-t =  terminal
+
+simple we can use as
+docker run -it -p 80:80 nginx /bin/bash
+
+now we are inside the container of nginx
+
+======
+root@gkr:/home/gkr# docker run -it -p 80:80 nginx /bin/bash
+root@74ffe5433bab:/#
+=======
+the container might not have other utilites installed in the containers:
+===
+root@2a395ceedc51:/# ifconfig
+bash: ifconfig: command not found
+root@2a395ceedc51:/# ping
+bash: ping: command not found
+root@2a395ceedc51:/# ip addr show
+bash: ip: command not found
+root@2a395ceedc51:/# ip addr
+bash: ip: command not found
+======
+
+
+/bin/bash  : where we have to land will be given.
+
+nginx : is the image name which is used to run for get the container running state of nginx.
+
+to exit from container terminal to the server:
+
+press ctrl+p+q
+
+
+
+to check from browser to check if the nginx page is working for my server or not:
+
+nginx is not working as the service is not started. to start the service of nginx:
+
+======
+root@gkr:/home/gkr# docker attach 74ffe5433bab
+root@74ffe5433bab:/# service nginx status
+[FAIL] nginx is not running ... failed!
+root@74ffe5433bab:/# ^C
+root@74ffe5433bab:/# service nginx start
+root@74ffe5433bab:/# service nginx status
+[ ok ] nginx is running.
+==========
+
+by ubuntu machines ip:
+
+192.168.1.2
+
+
+========
+
+on Ubuntu:
+
+root@2a395ceedc51:/# apt-get update
+
+root@2a395ceedc51:/# apt-get install net-tools
+
+==============
+
+ctl+p+q  is use to come out from the container.
+
+in -p 80:80 
+left is: container port
+right is : host port
+
+
+when we use the docker host (ubuntu serverip) in the browser it will not work as 
+the service is not started yet.
+
+cmd:
+===
+docker attach containerid	(this is old command . we can also run from outsideof the container also.)
+
+====
+
+service to check :
+service nginx status
+
+====
+root@gkr:/home/gkr# docker attach 2a395ceedc51
+root@2a395ceedc51:/# service nginx status
+[FAIL] nginx is not running ... failed!
+====
+
+to start the service of nginx:
+==============
+root@2a395ceedc51:/# service nginx start
+
+==============
+now again checking the status  of nginx:
+=============
+root@2a395ceedc51:/# service nginx status
+[ ok ] nginx is running.
+=============
+
+now again check the server:
+
+http://192.168.1.2:80
+
+=================
+ install httpd:
+=====================
+root@gkr:/home/gkr# docker run -it -p 8080:80 httpd /bin/bash
+root@f27cdaafc3b8:/usr/local/apache2#
+===================
+
+now browse: http://192.168.1.2:8080/
+
+==================
+
+system is only one and we can able to run more than one container by using different ports. (80,8080)
+
+=============
+
+to stop the container which are running
+==============
+root@gkr:/home/gkr# docker stop $(docker ps -qa)
+f27cdaafc3b8
+9d892a315c99
+2a395ceedc51
+18af88b2328c
+20d801b31b4f
+d6a091b2a7eb
+7c5cc21394f5
+27e5239b99e6
+74ffe5433bab
+c4e9f65b234a
+=============
+ to remove all the containers running :
+
+ docker rm $(docker ps -aq)
+
+===
+root@gkr:/home/gkr# docker rm $(docker ps -aq)
+f27cdaafc3b8
+9d892a315c99
+2a395ceedc51
+18af88b2328c
+20d801b31b4f
+d6a091b2a7eb
+7c5cc21394f5
+27e5239b99e6
+74ffe5433bab
+c4e9f65b234a
+
+==
+
+============================
+class 2: 
+===========================
+
+it will search from docker hub about the ubuntu and shows all available ubuntu from docker hub.
+
+root@gkr:/home/gkr# docker search ubuntu
+
+===========
+
+we will take from docker official
+
+docker pull ubuntu:latest
+
+==========
+
+root@gkr:/home/gkr# docker pull ubuntu:latest
+latest: Pulling from library/ubuntu
+5bed26d33875: Pull complete
+f11b29a9c730: Pull complete
+930bda195c84: Pull complete
+78bf9a5ad49e: Pull complete
+Digest: sha256:bec5a2727be7fff3d308193cfde3491f8fba1a2ba392b7546b43a051853a341d
+Status: Downloaded newer image for ubuntu:latest
+docker.io/library/ubuntu:latest
+==========
+
+root@gkr:/home/gkr# docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+ubuntu              latest              4e5021d210f6        9 days ago          64.2MB
+nginx               latest              6678c7c2e56c        3 weeks ago         127MB
+httpd               latest              c5a012f9cf45        4 weeks ago         165MB
+nimmis/apache       latest              299c811f8a0a        6 months ago        385MB
+hello-world         latest              fce289e99eb9        15 months ago 
+
+=============
+
+we will put some basic utilites.
+
+cmd which has --rm means it will delete the container after exiting from it (container)
+
+command:
+docker rum --rm -it --name=ubuntuout --hostname=ubuntuin -p 8080:80 ubuntu bash
+
+======
+
+root@gkr:/home/gkr# docker run --rm -it --name=ubuntuout --hostname=ubuntuin -p 8080:80 ubuntu bash
+root@ubuntuin:/#
+======
+ when i exit from container by clicking or pressing ctrl+p+q
+
+and run the command: docker ps
+
+==============
+
+root@ubuntuin:/# root@gkr:/home/gkr#
+root@gkr:/home/gkr# docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED              STATUS              PORTS                  NAMES
+6f6922648992        ubuntu              "bash"              About a minute ago   Up About a minute   0.0.0.0:8080->80/tcp   ubuntuout
+
+=================
+
+logging into ubuntu server:
+
+root@gkr:/home/gkr# docker attach 6f6922648992
+
+
+
+for some linux servers 'attach command' will not work.
+
+
+we can also use exec command in place of using attach command:
+
+==========================
+root@gkr:/home/gkr# docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS                  NAMES
+6f6922648992        ubuntu              "bash"              2 hours ago         Up 2 hours          0.0.0.0:8080->80/tcp   ubuntuout
+root@gkr:/home/gkr# docker exec -it 6f6922648992 bash
+root@ubuntuin:/#
+==========================
+
+
+
+

@@ -1,0 +1,504 @@
+Class 1:
+========
+
+Linux Commands: Ubuntu i used for below commands.
+
+1)whoami    ( what is the name of the user who are currently logged in.)
+
+ubuntu
+
+2)who   (  if we want to check the number of the users who logged in this linux server)
+
+ubuntu   pts/0        2020-03-27 13:51 (122.171.223.130)
+
+pts/0: which terminal it is using.
+
+3) pwd   ( stands for present working directory)
+
+/home/ubuntu
+
+we need to know the working directory structure of any linux machine.
+
+start with  /   (also called as root directory, This is the parent of entire file system).
+
+under /  (root)
+
+we have 
+/root
+/home
+/etc
+/bin
+/sbin
+/tmp
+...
+
+ root is the super admin and this user has complete control over other directories.
+the word root directory comes in three different scenarios:
+
+The super user or System admin: is also called as root user.
+when this super user logs in the linux server the defaault directory is /root under /(child root of parent (or) main root directory).
+
+if any user who logs in the default user directory is /home/kishore  or /home/sai or /home/ravi
+
+ubuntu@ip-172-31-44-71:~$ pwd
+/home/ubuntu
+
+we caan use to check the exact home directory for the user using echo $HOME:
+
+ubuntu@ip-172-31-44-71:~$ echo $HOME
+/home/ubuntu
+
+with this basic understanding we will go through other following details.
+
+Linux machine mainly works through the command prompt
+
+we are going to work with the files.
+
+to create file in linux we can use touch command
+
+touch with file name
+
+touch file1
+
+to list the files under the directory where u used touch command to check the file created.
+
+ls
+
+==================
+ubuntu@ip-172-31-44-71:~$ touch file1
+ubuntu@ip-172-31-44-71:~$ ls
+file1
+ubuntu@ip-172-31-44-71:~$
+======================
+
+if you want to create many files in a single step using touch with the file names with spaces in each of them then
+
+touch file2 file3 file4 file5
+
+imp: Size of the files are zero bytes.
+
+===============
+ubuntu@ip-172-31-44-71:~$ ls
+file1
+ubuntu@ip-172-31-44-71:~$ touch file2 file3 file4 file5
+ubuntu@ip-172-31-44-71:~$ ls
+file1  file2  file3  file4  file5
+ubuntu@ip-172-31-44-71:~$
+======================
+
+touh is used for two purposes.
+
+-> touch is used in creating the files
+
+-> touch is used in updating the timestamps of the files
+
+
+automation of the work is done by using shell scripts like, devops culture, aws.
+
+as we want to automate the devops tools by using shell programming.
+
+we require to create file to store some data. For this we use cat command like below
+
+cat > file1
+
+here ubuntu@ip-172-31-44-71:~$ is the command prompt 
+whe we use the cata file1
+it goes into the file1 at the command prompt only where u can input the statements or information by typing.
+
+type anything like, i am kishore
+
+then presee ctrl+d
+
+then it will exit from the cat input sheel to normal command prompt.
+
+cat > file6
+
+here if the file6 files is already created then it will overwrite the file else it will create and can able to input the statements.
+
+here the older data or statement lost if we use same file or already created file using cat command 
+cat > file1
+
+
+if you want not to get the statements lost or overwrite the data and can ammend the data.
+you can use 
+cat >> file1
+
+so here  three cases of  the useage of cat command.
+
+cat filename ( displays the content of the filename)
+
+cat >  filename (overwrite the dat with latest inputs and loosing the earlier daata)
+
+cat >> filename  ( amend the daata without loosing the earlier data in the file)
+
+
+
+directories creation:
+
+we can create direcotries using
+
+mkdir directoryname
+
+
+mkdire first
+
+============
+ubuntu@ip-172-31-44-71:~$ mkdir first
+ubuntu@ip-172-31-44-71:~$ ls
+file1  file2  file3  file4  file5  first
+============
+
+
+creating the subfolders under parent folder....
+
+mkdir d1/d2/d3/d4/d5    this won't work.
+
+it will work with giving the -p (parent) between the mkdir and the folder structure
+
+mkdir -p d1/d2/d3/d4/d5
+
+this package is used for showing the  tree structure of the  directories:
+
+sudo apt-get install -y tree
+
+===================
+
+ubuntu@ip-172-31-44-71:~$ sudo apt-get install -y tree
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+The following NEW packages will be installed:
+  tree
+0 upgraded, 1 newly installed, 0 to remove and 33 not upgraded.
+Need to get 40.7 kB of archives.
+After this operation, 105 kB of additional disk space will be used.
+Get:1 http://us-east-1.ec2.archive.ubuntu.com/ubuntu bionic/universe amd64 tree amd64 1.7.0-5 [40.7 kB]
+Fetched 40.7 kB in 0s (3554 kB/s)
+Selecting previously unselected package tree.
+(Reading database ... 83941 files and directories currently installed.)
+Preparing to unpack .../tree_1.7.0-5_amd64.deb ...
+Unpacking tree (1.7.0-5) ...
+Setting up tree (1.7.0-5) ...
+Processing triggers for man-db (2.8.3-2ubuntu0.1) ...
+ubuntu@ip-172-31-44-71:~$  tree d1
+d1
++-- d2
+    +-- d3
+        +-- d4
+            +-- d5
+
+4 directories, 0 files
+ubuntu@ip-172-31-44-71:~$
+
+========================
+
+to remove the directory we can use mkdir directoryname
+
+================
+ubuntu@ip-172-31-44-71:~$ mkdir aa
+
+ubuntu@ip-172-31-44-71:~$ ls
+aa  d1  file1  file2  file3  file4  file5  first
+
+ubuntu@ip-172-31-44-71:~$ rmdir aa
+
+ubuntu@ip-172-31-44-71:~$ ls
+d1  file1  file2  file3  file4  file5  first
+
+the same rmdir on d1 directory won't work.rmdir used to delete the empty direcotory or only only directory.
+=============================
+ubuntu@ip-172-31-44-71:~$ rmdir d1
+rmdir: failed to remove 'd1': Directory not empty
+====================================
+
+
+for the tree like structure folder we use to delete like using -r recursive.
+command:
+
+rm -r d1
+
+============================
+
+ubuntu@ip-172-31-44-71:~$ mkdir -p d1/d2/d3/d4/d5
+ubuntu@ip-172-31-44-71:~$ ls
+d1  file1  file2  file3  file4  file5
+ubuntu@ip-172-31-44-71:~$ rmdir d1
+rmdir: failed to remove 'd1': Directory not empty
+ubuntu@ip-172-31-44-71:~$ rmdir -r d1
+rmdir: invalid option -- 'r'
+Try 'rmdir --help' for more information.
+ubuntu@ip-172-31-44-71:~$ rm  -r d1
+ubuntu@ip-172-31-44-71:~$ ls
+file1  file2  file3  file4  file5
+=================================
+
+files also can be removed using rm  filename
+
+=====
+ubuntu@ip-172-31-44-71:~$ rm file1
+ubuntu@ip-172-31-44-71:~$ ls
+file2  file3  file4  file5
+ubuntu@ip-172-31-44-71:~$ rm -r file2
+ubuntu@ip-172-31-44-71:~$ ls
+file3  file4  file5
+ubuntu@ip-172-31-44-71:~$
+=======
+
+man rm
+
+here man is manual for rm command.
+
+cd  = change the directory
+
+mkdir -p d1/d2/d3/d4/d5
+
+cd d1
+cd d2/d3/d4/d5
+
+cd .   = represents current directory
+
+cd .. = reprensents parent direcotry from where it is using this command.
+
+=====================
+
+ubuntu@ip-172-31-44-71:~$ mkdir -p d1/d2/d3/d4/d5
+ubuntu@ip-172-31-44-71:~$ ls
+d1  file3  file4  file5
+ubuntu@ip-172-31-44-71:~$ tree d1
+d1
++-- d2
+    +-- d3
+        +-- d4
+            +-- d5
+
+4 directories, 0 files
+ubuntu@ip-172-31-44-71:~$ pwd
+/home/ubuntu
+ubuntu@ip-172-31-44-71:~$ cd d5
+-bash: cd: d5: No such file or directory
+ubuntu@ip-172-31-44-71:~$ cd d1/d2/d3/d4/d5
+ubuntu@ip-172-31-44-71:~/d1/d2/d3/d4/d5$  cd .
+ubuntu@ip-172-31-44-71:~/d1/d2/d3/d4/d5$ pwd
+/home/ubuntu/d1/d2/d3/d4/d5
+ubuntu@ip-172-31-44-71:~/d1/d2/d3/d4/d5$ cd .
+ubuntu@ip-172-31-44-71:~/d1/d2/d3/d4/d5$ cd ..
+ubuntu@ip-172-31-44-71:~/d1/d2/d3/d4$
+
+==============================
+
+cd ../..
+
+
+
+of u just use the cd command then it just goes back to the home direcotry of the user:
+==============
+
+ubuntu@ip-172-31-44-71:~/d1/d2/d3/d4$ cd
+ubuntu@ip-172-31-44-71:~$ pwd
+/home/ubuntu
+
+you can also use the cd ~
+
+===========
+ubuntu@ip-172-31-44-71:~$ cd d1
+ubuntu@ip-172-31-44-71:~/d1$ cd ~
+ubuntu@ip-172-31-44-71:~$ pwd
+/home/ubuntu
+============
+
+ls -l: l mean long listing.
+
+====
+ubuntu@ip-172-31-44-71:~$ ls -l
+total 4
+drwxrwxr-x 3 ubuntu ubuntu 4096 Mar 28 10:01 d1
+-rw-rw-r-- 1 ubuntu ubuntu    0 Mar 28 08:18 file3
+-rw-rw-r-- 1 ubuntu ubuntu    0 Mar 28 08:18 file4
+-rw-rw-r-- 1 ubuntu ubuntu    0 Mar 28 08:18 file5
+
+=====
+
+ls -la
+
+it shows all hinden files with visible files.
+===========
+
+ls shows only visible files
+
+ls -a show hidden files and visible files.
+
+
+
+most of the linux flavours will use instead for ls -la  as ll comand
+when we use ls -l which shows the metadaata for the files (like their owner, group owner, size of the file and timestampt of the file at which it creaated.)
+
+as the size of the files are shown in bytes format.
+if we want to see in kilo bytes or mega bytes as human readable then you can use the below command:
+
+ls -lh  (h-> human readable)
+===============
+ubuntu@ip-172-31-44-71:~$ ll
+total 40
+drwxr-xr-x 6 ubuntu ubuntu 4096 Mar 28 10:25 ./
+drwxr-xr-x 3 root   root   4096 Mar 27 13:42 ../
+-rw------- 1 ubuntu ubuntu  733 Mar 28 10:27 .bash_history
+-rw-r--r-- 1 ubuntu ubuntu  220 Apr  4  2018 .bash_logout
+-rw-r--r-- 1 ubuntu ubuntu 3771 Apr  4  2018 .bashrc
+drwx------ 2 ubuntu ubuntu 4096 Mar 27 13:51 .cache/
+-rw-rw-r-- 1 ubuntu ubuntu    0 Mar 28 10:25 .file1
+drwx------ 3 ubuntu ubuntu 4096 Mar 27 13:51 .gnupg/
+-rw-r--r-- 1 ubuntu ubuntu  807 Apr  4  2018 .profile
+drwx------ 2 ubuntu ubuntu 4096 Mar 27 13:42 .ssh/
+-rw-r--r-- 1 ubuntu ubuntu    0 Mar 28 09:38 .sudo_as_admin_successful
+drwxrwxr-x 3 ubuntu ubuntu 4096 Mar 28 10:01 d1/
+-rw-rw-r-- 1 ubuntu ubuntu    0 Mar 28 08:18 file3
+-rw-rw-r-- 1 ubuntu ubuntu    0 Mar 28 08:18 file4
+-rw-rw-r-- 1 ubuntu ubuntu    0 Mar 28 08:18 file5
+
+====================
+ubuntu@ip-172-31-44-71:~$ ls -lh
+total 4.0K
+drwxrwxr-x 3 ubuntu ubuntu 4.0K Mar 28 10:01 d1
+-rw-rw-r-- 1 ubuntu ubuntu    0 Mar 28 08:18 file3
+-rw-rw-r-- 1 ubuntu ubuntu    0 Mar 28 08:18 file4
+-rw-rw-r-- 1 ubuntu ubuntu    0 Mar 28 08:18 file5
+=======================================
+
+
+when u use the command: cd /  ( going to root path (parent of all folder path)
+
+then using ls -lh
+===============
+ubuntu@ip-172-31-44-71:/$ ls -lh
+total 88K
+drwxr-xr-x  2 root root 4.0K Mar 28 08:05 bin
+drwxr-xr-x  3 root root 4.0K Mar 28 08:05 boot
+drwxr-xr-x 15 root root 3.0K Mar 28 14:35 dev
+drwxr-xr-x 89 root root 4.0K Mar 28 08:05 etc
+drwxr-xr-x  3 root root 4.0K Mar 27 13:42 home
+lrwxrwxrwx  1 root root   31 Mar 28 08:05 initrd.img -> boot/initrd.img-4.15.0-1063-aws
+lrwxrwxrwx  1 root root   31 Jan 12 17:42 initrd.img.old -> boot/initrd.img-4.15.0-1057-aws
+drwxr-xr-x 20 root root 4.0K Jan 12 17:36 lib
+drwxr-xr-x  2 root root 4.0K Jan 12 17:33 lib64
+drwx------  2 root root  16K Jan 12 17:38 lost+found
+drwxr-xr-x  2 root root 4.0K Jan 12 17:33 media
+drwxr-xr-x  2 root root 4.0K Jan 12 17:33 mnt
+drwxr-xr-x  2 root root 4.0K Jan 12 17:33 opt
+dr-xr-xr-x 99 root root    0 Mar 28 14:35 proc
+drwx------  4 root root 4.0K Mar 27 13:42 root
+drwxr-xr-x 25 root root  860 Mar 28 14:38 run
+drwxr-xr-x  2 root root  12K Mar 28 08:04 sbin
+drwxr-xr-x  5 root root 4.0K Mar 27 13:42 snap
+drwxr-xr-x  2 root root 4.0K Jan 12 17:33 srv
+dr-xr-xr-x 13 root root    0 Mar 28 14:35 sys
+drwxrwxrwt  9 root root 4.0K Mar 28 14:38 tmp
+drwxr-xr-x 10 root root 4.0K Jan 12 17:33 usr
+drwxr-xr-x 13 root root 4.0K Jan 12 17:37 var
+================
+To find the files with respect to the timestamp:
+
+use command: ls -lt  => latest files come at top and older file goes at bottom.
+
+if you want the older files to go top and latest files at bottom then u can use : ls -ltr   (reverse timestamp)
+
+
+
+=============
+ubuntu@ip-172-31-44-71:~$  ls -lt
+total 4
+drwxrwxr-x 3 ubuntu ubuntu 4096 Mar 28 10:01 d1
+-rw-rw-r-- 1 ubuntu ubuntu    0 Mar 28 08:18 file3
+-rw-rw-r-- 1 ubuntu ubuntu    0 Mar 28 08:18 file4
+-rw-rw-r-- 1 ubuntu ubuntu    0 Mar 28 08:18 file5
+=====================
+ubuntu@ip-172-31-44-71:~$ ubuntu@ip-172-31-44-71:~$ ls -ltr
+-rw-rw-r-- 1 ubuntu ubuntu    0 Mar 28 08:18 file5
+-rw-rw-r-- 1 ubuntu ubuntu    0 Mar 28 08:18 file4
+-rw-rw-r-- 1 ubuntu ubuntu    0 Mar 28 08:18 file3
+drwxrwxr-x 3 ubuntu ubuntu 4096 Mar 28 10:01 d1
+==========================
+
+===================================================================================================================
+class -2
+===================================================================================================================
+
+How to copy the files:
+
+command to be used: cp file1 file2
+
+file1  is source file which is already created.
+if file2 is not created then it will create file2 with the same information in file1 (copy of file1)
+if file2 is already created then it will overwrite the file2 with the information in file1. 
+
+while working with directory we have to use -r (resursive)
+
+=================================
+ubuntu@ip-172-31-44-71:~$ cp d2 d3
+cp: -r not specified; omitting directory 'd2'
+ubuntu@ip-172-31-44-71:~$ cp d2 d6
+cp: -r not specified; omitting directory 'd2'
+ubuntu@ip-172-31-44-71:~$ cp -r d2 d6
+ubuntu@ip-172-31-44-71:~$ ls
+d1  d2  d6  file3  file4  file5
+==================================
+
+we can create files in the subdirectories
+
+ubuntu@ip-172-31-44-71:~$ touch d1/f1
+ubuntu@ip-172-31-44-71:~$ touch d1/d2/f2
+ubuntu@ip-172-31-44-71:~$ touch d1/d2/d3/f3
+ubuntu@ip-172-31-44-71:~$ tree d1
+d1
++-- d2
+¦   +-- d3
+¦   ¦   +-- d4
+¦   ¦   ¦   +-- d5
+¦   ¦   +-- f3
+¦   +-- f2
++-- f1
+
+4 directories, 3 files
+
+copying the directory to another directory with the smae directory structure or the files in them:
+
+==========================================
+ubuntu@ip-172-31-44-71:~$ cp d1 dir1
+cp: -r not specified; omitting directory 'd1'
+ubuntu@ip-172-31-44-71:~$ cp -r d1 dir1
+ubuntu@ip-172-31-44-71:~$ tree dir1
+dir1
++-- d2
+¦   +-- d3
+¦   ¦   +-- d4
+¦   ¦   ¦   +-- d5
+¦   ¦   +-- f3
+¦   +-- f2
++-- f1
+
+4 directories, 3 files
+=======================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

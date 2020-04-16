@@ -1,0 +1,36 @@
+docker -v
+docker version
+docker info
+docker images
+docker ps
+docker serach "image word"
+docker pull <imagename>
+docker run -it <imagename>
+docker run -d --name myname <imagename>
+docker ps
+dokcer ps -a
+docker ps | grep myclock
+docker ps -al
+docker ps -q
+docker ps -aq
+docker commit -m "my figlet ubuntu" 457807cfa86c myfigletubuntu
+docker rm 3f032858b437
+docker stop 3f032858b437
+docker rm -f 21daa67d6b28 457807cfa86c
+docker start 41fd6f0bf48c
+docker logs f64ddc0d4767
+docker logs -f f64ddc0d4767
+docker logs -f --tail 1  f64ddc0d4767
+
+
+
+
+
+
+
+
+
+
+
+
+
